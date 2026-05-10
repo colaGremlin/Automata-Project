@@ -46,12 +46,19 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { FiniteAutomata } from "@/utilities/finiteAutomata.js";
 import AutomataGraph from "@/components/Automata/AutomataGraph.vue";
 import AutomataTester from "@/components/Automata/AutomataTester.vue";
 
 const regularExpression = ref("");
+
+watch(regularExpression, (newVal) => {
+  if (newVal.includes('""')) {
+    regularExpression.value = newVal.replace(/""/g, "λ");
+  }
+});
+
 const type = ref("NFA");
 const options = ["NFA", "DFA", "Min DFA"];
 const activeStates = ref([]);
